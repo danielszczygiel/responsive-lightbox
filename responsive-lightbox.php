@@ -277,7 +277,13 @@ class Responsive_Lightbox
 	{
 		$link = (preg_match('/<a.*? rel=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 '.$this->options['settings']['selector'].'[gallery-'.$this->gallery_no.']'.'$2', $link) : preg_replace('/(<a.*?)>/', '$1 rel="'.$this->options['settings']['selector'].'[gallery-'.$this->gallery_no.']'.'">', $link));
 
-		return (preg_match('/<a.*? href=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1'.wp_get_attachment_url($id).'$2', $link) : preg_replace('/(<a.*?)>/', '$1 href="'.wp_get_attachment_url($id).'">', $link));
+		# Use 'large' instead of 'full' images
+        $image = wp_get_attachment_image_src( $id, 'large' );
+        $large_img = $image[0];
+
+		return (preg_match('/<a.*? href=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1'.$large_img.'$2', $link) : preg_replace('/(<a.*?)>/', '$1 href="'.$large_img.'">', $link));
+
+		//return (preg_match('/<a.*? href=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1'.wp_get_attachment_url($id).'$2', $link) : preg_replace('/(<a.*?)>/', '$1 href="'.wp_get_attachment_url($id).'">', $link));
 	}
 
 
@@ -931,7 +937,7 @@ class Responsive_Lightbox
 			<p class="description">'.__('in pixels', 'responsive-lightbox').'</p>
 		</div>';
 	}
-	
+
 
 	public function rl_pp_theme()
 	{
@@ -1808,7 +1814,7 @@ class Responsive_Lightbox
 
 				//change fade
 				$input['fancybox']['change_fade'] = (int)($input['fancybox']['change_fade'] > 0 ? $input['fancybox']['change_fade'] : $this->defaults['configuration']['fancybox']['change_fade']);
-				
+
 				//padding
 				$input['fancybox']['padding'] = (int)($input['fancybox']['padding'] > 0 ? $input['fancybox']['padding'] : $this->defaults['configuration']['fancybox']['padding']);
 
@@ -1938,7 +1944,7 @@ class Responsive_Lightbox
 		echo '
 			</h2>
 			<div class="responsive-lightbox-settings">
-			
+
 				<div class="df-credits">
 					<h3 class="hndle">'.__('Responsive Lightbox', 'responsive-lightbox').' '.$this->defaults['version'].'</h3>
 					<div class="inside">
@@ -1949,12 +1955,12 @@ class Responsive_Lightbox
 						<p class="inner"><a href="http://wordpress.org/support/view/plugin-reviews/responsive-lightbox" target="_blank" title="'.__('Rate it 5', 'responsive-lightbox').'">'.__('Rate it 5', 'responsive-lightbox').'</a> '.__('on WordPress.org', 'responsive-lightbox').'<br />'.
 						__('Blog about it & link to the', 'responsive-lightbox').' <a href="http://www.dfactory.eu/plugins/responsive-lightbox/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=blog-about" target="_blank" title="'.__('plugin page', 'responsive-lightbox').'">'.__('plugin page', 'responsive-lightbox').'</a><br />'.
 						__('Check out our other', 'responsive-lightbox').' <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=other-plugins" target="_blank" title="'.__('WordPress plugins', 'responsive-lightbox').'">'.__('WordPress plugins', 'responsive-lightbox').'</a>
-						</p>            
+						</p>
 						<hr />
 						<p class="df-link inner">Created by <a href="http://www.dfactory.eu/?utm_source=responsive-lightbox-settings&utm_medium=link&utm_campaign=created-by" target="_blank" title="dFactory - Quality plugins for WordPress"><img src="'.plugins_url('/images/logo-dfactory.png' , __FILE__ ).'" title="dFactory - Quality plugins for WordPress" alt="dFactory - Quality plugins for WordPress" /></a></p>
 					</div>
 				</div>
-			
+
 				<form action="options.php" method="post">
 					<input type="hidden" name="script_r" value="'.esc_attr($this->options['settings']['script']).'" />';
 
@@ -2254,7 +2260,7 @@ class Responsive_Lightbox
 
 
 	/**
-	 * 
+	 *
 	*/
 	private function getBooleanValue($option)
 	{
@@ -2274,7 +2280,7 @@ class Responsive_Lightbox
 	/**
 	 * Add links to Support Forum
 	*/
-	public function plugin_extend_links($links, $file) 
+	public function plugin_extend_links($links, $file)
 	{
 		if(!current_user_can('install_plugins'))
 			return $links;
@@ -2296,7 +2302,7 @@ class Responsive_Lightbox
 	/**
 	 * Add links to Settings page
 	*/
-	function plugin_settings_link($links, $file) 
+	function plugin_settings_link($links, $file)
 	{
 		if(!is_admin() || !current_user_can('manage_options'))
 			return $links;
@@ -2305,7 +2311,7 @@ class Responsive_Lightbox
 
 		$plugin = plugin_basename(__FILE__);
 
-		if($file == $plugin) 
+		if($file == $plugin)
 		{
 			$settings_link = sprintf('<a href="%s">%s</a>', admin_url('options-general.php').'?page=responsive-lightbox', __('Settings', 'responsive-lightbox'));
 			array_unshift($links, $settings_link);
@@ -2316,4 +2322,3 @@ class Responsive_Lightbox
 }
 
 $responsive_lightbox = new Responsive_Lightbox();
-?>
