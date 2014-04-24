@@ -2322,3 +2322,4 @@ class Responsive_Lightbox
 }
 
 $responsive_lightbox = new Responsive_Lightbox();
+?>
