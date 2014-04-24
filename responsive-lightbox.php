@@ -277,13 +277,13 @@ class Responsive_Lightbox
 	{
 		$link = (preg_match('/<a.*? rel=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? rel=(?:"|\').*?)((?:"|\').*?>)/', '$1 '.$this->options['settings']['selector'].'[gallery-'.$this->gallery_no.']'.'$2', $link) : preg_replace('/(<a.*?)>/', '$1 rel="'.$this->options['settings']['selector'].'[gallery-'.$this->gallery_no.']'.'">', $link));
 
-		# Use 'large' instead of 'full' images
+		/* Use 'large' instead of 'full' images */
         $image = wp_get_attachment_image_src( $id, 'large' );
         $large_img = $image[0];
 
 		return (preg_match('/<a.*? href=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1'.$large_img.'$2', $link) : preg_replace('/(<a.*?)>/', '$1 href="'.$large_img.'">', $link));
 
-		//return (preg_match('/<a.*? href=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1'.wp_get_attachment_url($id).'$2', $link) : preg_replace('/(<a.*?)>/', '$1 href="'.wp_get_attachment_url($id).'">', $link));
+		/*return (preg_match('/<a.*? href=("|\').*?("|\')>/', $link) === 1 ? preg_replace('/(<a.*? href=(?:"|\')).*?((?:"|\').*?>)/', '$1'.wp_get_attachment_url($id).'$2', $link) : preg_replace('/(<a.*?)>/', '$1 href="'.wp_get_attachment_url($id).'">', $link));*/
 	}
 
 
